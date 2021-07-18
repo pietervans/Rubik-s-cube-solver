@@ -109,11 +109,16 @@ class State:
         x: white, y: green, z: red"""
         self.positions = positions
     
+
     def isSolved(self) -> bool:
         for elem in self.positions.values():
             if elem.c1 != elem.orientation or elem.c2 != elem.orientation2:
                 return False
         return True
+    
+    
+    def freeze(self):
+        return frozenset({elem.freeze() for elem in self.positions.values()})
 
 
     def determineColors(self, side: Color, inv1=1, inv2=1, switch=False):
@@ -186,6 +191,13 @@ class Corner:
         self.orientation = orientation
         self.orientation2 = orientation2
 
+    def freeze(self):
+        """Used in State.freeze() in order for States to be hashable
+        IMPORTANT NOTE: we suppose the reference sides are chosen identically when comparing Corners.
+        This is mostly the case, usually the choice of reference sides is only made once."""
+        return tuple([self.c1.value, self.c2.value, self.c3.value, self.orientation.value, self.orientation2.value])
+    
+
     def getColorOnSide(self, side):
         if side == self.orientation:
             return self.c1
@@ -201,7 +213,14 @@ class Edge:
         self.c1 = c1
         self.c2 = c2
         self.orientation = orientation
-        self.orientation2 = orientation2 # used to check for goal
+        self.orientation2 = orientation2 # redundant, but used in State.isSolved
+
+    def freeze(self):
+        """Used in State.freeze() in order for States to be hashable
+        IMPORTANT NOTE: we suppose the reference sides are chosen identically when comparing Edges.
+        This is mostly the case, usually the choice of reference sides is only made once."""
+        return tuple([self.c1.value, self.c2.value, self.orientation.value, self.orientation2.value])
+    
 
     def getColorOnSide(self, side):
         return self.c1 if side==self.orientation else self.c2

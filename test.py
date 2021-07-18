@@ -27,14 +27,19 @@ s = State({
 
 a = Action(Color.BLUE, False)
 s = move(s, a)
-s = move(s, a)
 a = Action(Color.ORANGE, False)
 s = move(s, a)
 a = Action(Color.YELLOW, True)
 s = move(s, a)
 a = Action(Color.RED, False)
 s = move(s, a)
+a = Action(Color.GREEN, True)
+s = move(s, a)
+a = Action(Color.WHITE, True)
+s = move(s, a)
 
-action_seq = bfs(s)
+action_seq = bfs(s, 6)
+
+print("Found optimal sequence:")
 for a in action_seq:
     print(a)

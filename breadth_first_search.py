@@ -1,4 +1,4 @@
-from state_and_action import State, Action, ALL_ACTIONS, Color
+from state_and_action import State, Action, ALL_ACTIONS
 from move import move
 from typing import List
 
@@ -10,6 +10,7 @@ def bfs(state: State, max_depth=5) -> List[Action]:
         return []
     states = [state]
     action_seqs = [[]]
+    visited = {state.freeze()}
     depth = 1
     while depth <= max_depth:
         depth += 1
@@ -21,6 +22,9 @@ def bfs(state: State, max_depth=5) -> List[Action]:
             # Try all actions
             for action in ALL_ACTIONS:
                 new_s = move(s, action)
+                if new_s.freeze() in visited:
+                    continue
+                visited.add(new_s.freeze())
                 new_seq = list(action_seq)
                 new_seq.append(action)
                 if new_s.isSolved():
