@@ -3,6 +3,8 @@ from copy import deepcopy
 
 
 def move(state: State, action: Action) -> State:
+    """Return a new state that corresponds with the given state
+    after performing the given action"""
     positions = deepcopy(state.positions)
     new_positions = dict()
     colorDict = action.getColorDict()

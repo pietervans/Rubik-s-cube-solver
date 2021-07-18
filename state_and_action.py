@@ -31,6 +31,7 @@ class Action:
         self.face = face
         self.clockwise = clockwise
     
+
     # Map from color to (coordinate index, value)
     # E.g. (0,1) means x=1
     COORDINATES = {
@@ -92,6 +93,12 @@ class Action:
         for i in range(4):
             d[ordering[i]] = ordering[(i+1)%4]
         return d
+    
+    def __str__(self) -> str:
+        return self.face.name + (" Clockwise" if self.clockwise else " Counter-clockwise")
+
+
+ALL_ACTIONS = [Action(face, True) for face in Color] + [Action(face, False) for face in Color]
 
 
 
@@ -102,7 +109,7 @@ class State:
         x: white, y: green, z: red"""
         self.positions = positions
     
-    def goal(self) -> bool:
+    def isSolved(self) -> bool:
         for elem in self.positions.values():
             if elem.c1 != elem.orientation or elem.c2 != elem.orientation2:
                 return False

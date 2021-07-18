@@ -1,5 +1,6 @@
 from state_and_action import State, Corner, Color, Edge, Action
 from move import move
+from breadth_first_search import bfs
 
 s = State({
     (1,1,1): Corner(Color.RED, Color.WHITE, Color.GREEN, Color.RED, Color.WHITE),
@@ -29,4 +30,11 @@ s = move(s, a)
 s = move(s, a)
 a = Action(Color.ORANGE, False)
 s = move(s, a)
-print(s)
+a = Action(Color.YELLOW, True)
+s = move(s, a)
+a = Action(Color.RED, False)
+s = move(s, a)
+
+action_seq = bfs(s)
+for a in action_seq:
+    print(a)
